@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blog.mapper.TagMapper">
+
+    <resultMap id="BaseResultMap" type="com.blog.domain.Tag">
+        <id property="tag_id" column="tag_id" jdbcType="TINYINT"/>
+        <result property="name" column="name" jdbcType="CHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        tag_id,name
+    </sql>
+    <select id="selectTagByPassageId" resultMap="BaseResultMap">
+        SELECT
+            t.*
+        FROM
+            passage_tag pt
+                LEFT JOIN tag t ON pt.passage_id = #{passage_id, jdbcType= NUMERIC} AND pt.tag_id = t.tag_id
+    </select>
+</mapper>

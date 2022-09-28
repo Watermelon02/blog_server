@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blog.mapper.PassageMapper">
+
+    <resultMap id="BaseResultMap" type="com.blog.domain.Passage">
+        <id property="passage_id" column="passage_id" jdbcType="BIGINT"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="sub_title" column="sub_title" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="cover" column="cover" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        passage_id
+        ,title,sub_title,
+        content,create_time,update_time,
+        cover
+    </sql>
+    <insert id="insertAll">
+        insert into passage
+        (title, sub_title,
+         content, cover)
+        values (#{title,jdbcType=VARCHAR}, #{sub_title,jdbcType=VARCHAR},
+                #{content,jdbcType=VARCHAR}, #{cover,jdbcType=VARCHAR})
+
+    </insert>
+    <select id="selectByPage" resultMap="BaseResultMap">
+        SELECT passage_id,title,sub_title,create_time,update_time,cover
+        FROM passage
+    </select>
+    <select id="selectByTagAndPage" resultMap="BaseResultMap">
+        SELECT passage.passage_id,passage.title,passage.sub_title,passage.create_time,passage.update_time,passage.cover
+        FROM passage
+                 INNER JOIN passage_tag
+                            on passage_tag.passage_id = passage.passage_id
+        WHERE passage_tag.tag_id = #{tag_id,jdbcType=TINYINT}
+    </select>
+    <select id="selectLike" resultMap="BaseResultMap">
+        select passage.passage_id,passage.title,passage.sub_title,passage.content
+        from passage
+        where
+        content like #{keyword,jdbcType=VARCHAR}
+        OR title like #{keyword,jdbcType=VARCHAR}
+        OR sub_title like #{keyword,jdbcType=VARCHAR}
+    </select>
+
+</mapper>
