@@ -3,6 +3,7 @@ package com.blog.util;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.Future;
 
 @Service
 public class ImageUtil {
@@ -41,8 +43,7 @@ public class ImageUtil {
      * 保存图片
      */
     @Async("asyncThreadPoolTaskExecutor")
-
-    public boolean saveImage(MultipartFile mFile, File file) {
+    public Future<Boolean> saveImage(MultipartFile mFile, File file) {
         //查看文件夹是否存在，不存在则创建
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
@@ -51,11 +52,11 @@ public class ImageUtil {
             //使用此方法保存必须要绝对路径且文件夹必须已存在,否则报错
             mFile.transferTo(file.getAbsoluteFile());
             lastFile = file;
-            return true;
+            return new  AsyncResult<>(true);
         } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
+            return new  AsyncResult<>(false);
         }
-        return false;
     }
 
     /**

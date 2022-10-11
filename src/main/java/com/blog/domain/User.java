@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import lombok.Data;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 /**
  * 
@@ -49,6 +50,9 @@ public class User implements Serializable {
      */
     @TableField(value = "password")
     private String password;
+
+    @TableField(value = "role")
+    private String role;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

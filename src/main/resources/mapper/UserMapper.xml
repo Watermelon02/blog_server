@@ -11,6 +11,7 @@
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="blog" column="blog" jdbcType="VARCHAR"/>
         <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="role" column="role" jdbcType="CHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -26,7 +27,7 @@
     </select>
     <select id="selectByEmailAndPassword" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        user_id,email,avatar_url,name,blog,role
         from user
         where
         email = #{email,jdbcType=VARCHAR}

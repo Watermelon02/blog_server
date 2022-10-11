@@ -83,6 +83,11 @@
             <artifactId>jakarta.activation</artifactId>
             <version>2.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>1.9.1</version>
+        </dependency>
     </dependencies>
 
     <build>

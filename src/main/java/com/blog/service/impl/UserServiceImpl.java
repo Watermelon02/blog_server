@@ -28,11 +28,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         } else return false;
     }
 
-    public Result<User> login(String email, String password){
-        User user = userMapper.selectByEmailAndPassword(email, password);
-        if (user != null){
-            return new  Result(200,1L,user);
-        }else return new Result<User>(504,0L,null);
+    public User login(String email, String password){
+        return userMapper.selectByEmailAndPassword(email, password);
     }
 }
 

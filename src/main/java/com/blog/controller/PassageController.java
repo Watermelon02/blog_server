@@ -6,6 +6,8 @@ import com.blog.domain.response.Result;
 import com.blog.service.PassageService;
 import com.blog.service.PassageTagService;
 import com.blog.util.ImageUtil;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,7 @@ public class PassageController {
 
     @GetMapping("/select")
     public Result<List<Passage>> select(@RequestParam("curPage") Integer curPage) {
+        
         return passageService.select(curPage);
     }
 
@@ -46,12 +49,14 @@ public class PassageController {
         return passageService.selectOne(passage_id);
     }
 
+    @RequiresRoles(value = {"admin"},logical= Logical.AND)
     @PostMapping("/update")
     public int update(@RequestBody Passage passage) {
         return passageService.update(passage);
     }
 
     @Transactional
+    @RequiresRoles(value = {"admin"},logical= Logical.AND)
     @PostMapping("/post")
     public Result<String> post(@RequestParam("title") String title, @RequestParam("sub_title") String sub_title, @RequestParam("content") String content, @RequestParam("tags") Integer[] tags) {
         Result<String> result = new Result<String>(403, 0L, "没有先上传封面");
@@ -72,10 +77,5 @@ public class PassageController {
             imageUtil.transaction = false;
         }
         return result;
-    }
-
-    @GetMapping("/test")
-    public String test(){
-        return "12";
     }
 }

@@ -1,11 +1,8 @@
 package com.blog.controller;
 
-import com.blog.domain.response.UploadImageFailureResponse;
-import com.blog.domain.response.UploadImageResponse;
-import com.blog.domain.response.UploadImageSuccessResponse;
 import com.blog.util.ImageUtil;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,8 +11,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/image")
@@ -25,8 +22,9 @@ public class ImageController {
     @Autowired
     private ImageUtil imageUtil;
 
+    @RequiresRoles(value = {})
     @PostMapping(value = "/upload")
-    public String upload_image(@RequestParam("file") MultipartFile mFile) throws UnknownHostException {
+    public String upload_image(@RequestParam("file") MultipartFile mFile) throws UnknownHostException, ExecutionException, InterruptedException {
         imageUtil.transaction = true;
         //获取文件后缀
         String suffixName = imageUtil.getImagePath(mFile);
@@ -34,7 +32,7 @@ public class ImageController {
         String newFileName = imageUtil.getNewFileName(suffixName);
         //保存文件
         File file = new File(imageUtil.getNewImagePath(newFileName));
-        boolean state = imageUtil.saveImage(mFile, file);
+        boolean state = imageUtil.saveImage(mFile, file).get();
         if (state) {
             return imageUtil.getImageUrl(newFileName);
         } else {

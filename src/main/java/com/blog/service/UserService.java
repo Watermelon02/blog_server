@@ -13,5 +13,5 @@ import com.blog.domain.response.Result;
 public interface UserService extends IService<User> {
     Boolean isEmailExist(String email);
 
-    public Result<User> login(String account, String password);
+    public User login(String account, String password);
 }
