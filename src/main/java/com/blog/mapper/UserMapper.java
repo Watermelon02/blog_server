@@ -20,6 +20,8 @@ public interface UserMapper extends BaseMapper<User> {
     User selectByEmailEquals(@Param("email") String email);
 
     User selectByEmailAndPassword(@Param("email") String email, @Param("password") String password);
+
+    User selectByUserId(@Param("user_id")Long user_id);
 }
 
 

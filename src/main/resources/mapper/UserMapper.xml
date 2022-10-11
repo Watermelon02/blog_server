@@ -33,4 +33,11 @@
         email = #{email,jdbcType=VARCHAR}
         AND password = #{password,jdbcType=VARCHAR}
     </select>
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        select
+            user_id,avatar_url,name
+        from user
+        where
+            user_id = #{user_id,jdbcType=BIGINT}
+    </select>
 </mapper>

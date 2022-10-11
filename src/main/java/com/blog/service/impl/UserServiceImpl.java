@@ -31,6 +31,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public User login(String email, String password){
         return userMapper.selectByEmailAndPassword(email, password);
     }
+
+    @Override
+    public User selectByUserId(Long user_id) {
+        return userMapper.selectByUserId(user_id);
+    }
 }
 
 

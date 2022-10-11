@@ -16,4 +16,11 @@
         comment_id,passage_id,user_id,
         content,create_time
     </sql>
+    <select id="selectByPassageId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from comment
+        where
+        passage_id = #{passageId,jdbcType=NUMERIC}
+    </select>
 </mapper>
