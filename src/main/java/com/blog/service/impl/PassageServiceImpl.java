@@ -8,10 +8,13 @@ import com.blog.service.PassageService;
 import com.blog.domain.Passage;
 import com.blog.mapper.PassageMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.blog.aop.VisitorAspect.VISITOR_PASSAGE;
 
 /**
  * @author xigua
@@ -27,6 +30,8 @@ public class PassageServiceImpl extends ServiceImpl<PassageMapper, Passage>
     private PassageMapper passageMapper;
     @Autowired
     private TagMapper tagMapper;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @Transactional
     @Override
@@ -57,6 +62,7 @@ public class PassageServiceImpl extends ServiceImpl<PassageMapper, Passage>
     public Result<Passage> selectOne(Long passage_id) {
         Passage passage = passageMapper.selectById(passage_id);
         passage.setTags(tagMapper.selectTagByPassageId(passage.getPassage_id()));
+        passage.setVisitor(redisTemplate.opsForValue().get(VISITOR_PASSAGE + passage_id));
         return new Result<Passage>(200, 1L, passage);
     }
 
@@ -70,6 +76,16 @@ public class PassageServiceImpl extends ServiceImpl<PassageMapper, Passage>
     @Override
     public int update(Passage passage) {
         return passageMapper.updateById(passage);
+    }
+
+    @Override
+    public Result<String> delete(Long passage_id) {
+        try {
+            passageMapper.deleteById(passage_id);
+            return new Result<String>(200,0L,"success");
+        }catch (Exception e){
+            return new Result<String>(200,0L,"failure");
+        }
     }
 }
 

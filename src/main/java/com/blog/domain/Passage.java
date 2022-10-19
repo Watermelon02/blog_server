@@ -68,6 +68,11 @@ public class Passage implements Serializable {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 文章访问量
+     */
+    private String visitor;
+
     public Passage(String title,String sub_title,String content,String cover){
         this.title = title;
         this.sub_title = sub_title;

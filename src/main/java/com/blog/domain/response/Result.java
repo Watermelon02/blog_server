@@ -2,8 +2,10 @@ package com.blog.domain.response;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class Result<T>{
+public class Result<T> implements Serializable {
     private int status;
     private Long total;
     private T data;

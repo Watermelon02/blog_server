@@ -17,6 +17,6 @@
             t.*
         FROM
             passage_tag pt
-                LEFT JOIN tag t ON pt.passage_id = #{passage_id, jdbcType= NUMERIC} AND pt.tag_id = t.tag_id
+                INNER JOIN tag t ON pt.passage_id = #{passage_id, jdbcType= NUMERIC} AND pt.tag_id = t.tag_id
     </select>
 </mapper>

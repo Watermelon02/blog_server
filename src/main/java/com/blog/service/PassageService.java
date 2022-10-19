@@ -22,4 +22,6 @@ public interface PassageService extends IService<Passage> {
     Result<List<Passage>> selectLike(String keyword, Integer curPage);
 
     int update(Passage update);
+
+    Result<String> delete(Long passage_id);
 }

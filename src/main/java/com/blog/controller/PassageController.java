@@ -10,6 +10,10 @@ import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +21,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/passage")
-@CrossOrigin(originPatterns = "*",allowCredentials="true",allowedHeaders = "",methods = {})
+@CrossOrigin(originPatterns = "*", allowCredentials = "true", allowedHeaders = "", methods = {})
+@CacheConfig
 public class PassageController {
     @Value("${server.port}")
     private int port;
@@ -29,12 +34,13 @@ public class PassageController {
     private ImageUtil imageUtil;
 
     @GetMapping("/select")
+    @Cacheable(key = "'passages_page:'+#p0", cacheNames = "passages")
     public Result<List<Passage>> select(@RequestParam("curPage") Integer curPage) {
-        
         return passageService.select(curPage);
     }
 
     @GetMapping("/selectByTag")
+    @Cacheable(key = "'passages_tag:'+#p0+':'+#p1", cacheNames = "passages")
     public Result<List<Passage>> selectByTag(@RequestParam("tag_id") Integer tag_id, @RequestParam("curPage") Integer curPage) {
         return passageService.selectByTagsAndPage(tag_id, curPage);
     }
@@ -45,21 +51,24 @@ public class PassageController {
     }
 
     @GetMapping("/selectById")
-    public Result<Passage> selectById(@RequestParam("passage_id") Long passage_id){
+    @Cacheable(key = "'passages_id:'+#p0", cacheNames = "passage")
+    public Result<Passage> selectById(@RequestParam("passage_id") Long passage_id) {
         return passageService.selectOne(passage_id);
     }
 
-    @RequiresRoles(value = {"admin"},logical= Logical.AND)
+    @RequiresRoles(value = {"admin"}, logical = Logical.AND)
     @PostMapping("/update")
+    @CachePut(key = "'passages_id:'+#p0.passage_id", cacheNames = {"passages","passage"})
     public int update(@RequestBody Passage passage) {
         return passageService.update(passage);
     }
 
     @Transactional
-    @RequiresRoles(value = {"admin"},logical= Logical.AND)
+    @RequiresRoles(value = {"admin"}, logical = Logical.AND)
     @PostMapping("/post")
-    public Result<String> post(@RequestParam("title") String title, @RequestParam("sub_title") String sub_title, @RequestParam("content") String content, @RequestParam("tags") Integer[] tags) {
-        Result<String> result = new Result<String>(403, 0L, "没有先上传封面");
+    @CachePut(key = "'passages_id:'+#result.data.passage_id", cacheNames = {"passages","passage"})
+    public Result<Passage> post(@RequestParam("title") String title, @RequestParam("sub_title") String sub_title, @RequestParam("content") String content, @RequestParam("tags") Integer[] tags) {
+        Result<Passage> result = new Result<Passage>(403, 0L, null);
         try {
             if (imageUtil.transaction) {
                 String coverUrl = imageUtil.imageUrl;
@@ -68,14 +77,20 @@ public class PassageController {
                 for (int tag : tags) {
                     passageTagService.save(new PassageTag(tag, passage.getPassage_id()));
                 }
-                result = new Result<String>(200, 0L, "success");
+                result = new Result<Passage>(200, 0L, passage);
             }
         } catch (Exception e) {
             imageUtil.deleteLastImage();
-            result = new Result<String>(404, 0L, e.getMessage());
+            result = new Result<Passage>(404, 0L, null);
         } finally {
             imageUtil.transaction = false;
         }
         return result;
+    }
+
+    @GetMapping("/delete")
+    @CacheEvict(key = "'passage_id:'+#p0",cacheNames = {"passages","passage"},allEntries = true)
+    public Result<String> delete(@RequestParam("passage_id")Long passage_id){
+        return passageService.delete(passage_id);
     }
 }
