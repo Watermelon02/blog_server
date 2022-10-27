@@ -1,3 +1,4 @@
+/*
 package com.blog.configuration;
 
 import org.apache.ibatis.cache.CacheKey;
@@ -76,13 +77,15 @@ public class MybatisInterceptor implements Interceptor {
         return returnValue;
     }
 
-    /**
+    */
+/**
      * 如果是字符串对象则加上单引号返回，如果是日期则也需要转换成字符串形式，如果是其他则直接转换成字符串返回。
      *
      * @param obj
      * @return
      * @author zhouziyu
-     */
+     *//*
+
     private static String getParameterValue(Object obj) {
         String value;
         if (obj instanceof String) {
@@ -101,13 +104,15 @@ public class MybatisInterceptor implements Interceptor {
         return value;
     }
 
-    /**
+    */
+/**
      * 生成对应的带有值得sql语句
      *
      * @param configuration
      * @param boundSql
      * @return
-     */
+     *//*
+
     public static String getCompleteSql(Configuration configuration, BoundSql boundSql) {
 
         // 获得参数对象，如{id:1,name:"user1",param1:1,param2:"user1"}
@@ -158,4 +163,4 @@ public class MybatisInterceptor implements Interceptor {
     public void setProperties(Properties properties) {
         LOGGER.debug("创建属性值:" + properties);
     }
-}
+}*/

@@ -1,3 +1,4 @@
+/*
 package com.blog.configuration;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -22,4 +23,4 @@ public class MybatisSqlSessionConfig {
         sqlSessionFactory.getConfiguration().addInterceptor(sqlInterceptor);
         return "interceptor";
     }
-}
+}*/

@@ -2,10 +2,12 @@ package com.blog.controller;
 
 import com.blog.domain.Passage;
 import com.blog.domain.PassageTag;
+import com.blog.domain.User;
 import com.blog.domain.response.Result;
 import com.blog.service.PassageService;
 import com.blog.service.PassageTagService;
 import com.blog.util.ImageUtil;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/passage")
-@CrossOrigin(originPatterns = "*", allowCredentials = "true", allowedHeaders = "", methods = {})
-@CacheConfig
+@CacheConfig(cacheNames = "passage")
 public class PassageController {
     @Value("${server.port}")
     private int port;
@@ -34,13 +35,13 @@ public class PassageController {
     private ImageUtil imageUtil;
 
     @GetMapping("/select")
-    @Cacheable(key = "'passages_page:'+#p0", cacheNames = "passages")
+    @Cacheable(key = "'passages_page:'+#p0")
     public Result<List<Passage>> select(@RequestParam("curPage") Integer curPage) {
         return passageService.select(curPage);
     }
 
     @GetMapping("/selectByTag")
-    @Cacheable(key = "'passages_tag:'+#p0+':'+#p1", cacheNames = "passages")
+    @Cacheable(key = "'passages_tag:'+#p0+':'+#p1")
     public Result<List<Passage>> selectByTag(@RequestParam("tag_id") Integer tag_id, @RequestParam("curPage") Integer curPage) {
         return passageService.selectByTagsAndPage(tag_id, curPage);
     }
@@ -51,28 +52,29 @@ public class PassageController {
     }
 
     @GetMapping("/selectById")
-    @Cacheable(key = "'passages_id:'+#p0", cacheNames = "passage")
+    @Cacheable(key = "'passages_id:'+#p0")
     public Result<Passage> selectById(@RequestParam("passage_id") Long passage_id) {
         return passageService.selectOne(passage_id);
     }
 
     @RequiresRoles(value = {"admin"}, logical = Logical.AND)
     @PostMapping("/update")
-    @CachePut(key = "'passages_id:'+#p0.passage_id", cacheNames = {"passages","passage"})
+    @CachePut(key = "'passages_id:'+#p0.passage_id")
+    @CacheEvict(key = "'passage_id:'+#p0",allEntries = true)
     public int update(@RequestBody Passage passage) {
         return passageService.update(passage);
     }
 
     @Transactional
-    @RequiresRoles(value = {"admin"}, logical = Logical.AND)
+    @RequiresRoles(value = {"admin"})
     @PostMapping("/post")
-    @CachePut(key = "'passages_id:'+#result.data.passage_id", cacheNames = {"passages","passage"})
-    public Result<Passage> post(@RequestParam("title") String title, @RequestParam("sub_title") String sub_title, @RequestParam("content") String content, @RequestParam("tags") Integer[] tags) {
+    @CachePut(key = "'passages_id:'+#result.data.passage_id")
+    @CacheEvict(key = "'passage_id:'+#p0",allEntries = true)
+    public Result<Passage> post(@RequestParam("title") String title, @RequestParam("sub_title") String sub_title, @RequestParam("content") String content,@RequestParam("cover")String cover,@RequestParam("tags") Integer[] tags) {
         Result<Passage> result = new Result<Passage>(403, 0L, null);
         try {
             if (imageUtil.transaction) {
-                String coverUrl = imageUtil.imageUrl;
-                Passage passage = new Passage(title, sub_title, content, coverUrl);
+                Passage passage = new Passage(title, sub_title, content, cover);
                 passageService.save(passage);
                 for (int tag : tags) {
                     passageTagService.save(new PassageTag(tag, passage.getPassage_id()));
@@ -89,7 +91,8 @@ public class PassageController {
     }
 
     @GetMapping("/delete")
-    @CacheEvict(key = "'passage_id:'+#p0",cacheNames = {"passages","passage"},allEntries = true)
+    @CacheEvict(key = "'passage_id:'+#p0",allEntries = true)
+    @RequiresRoles(value = {"admin"})
     public Result<String> delete(@RequestParam("passage_id")Long passage_id){
         return passageService.delete(passage_id);
     }

@@ -67,7 +67,10 @@ public class ShiroConfig {
         return cookieManager;
     }
 
-    /**开启Shiro身份认证注解*/
+    /**
+     * 开启Shiro身份认证注解
+     */
+
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
@@ -75,11 +78,15 @@ public class ShiroConfig {
         return authorizationAttributeSourceAdvisor;
     }
 
-    /**开启Shiro身份认证注解*/
+    /**
+     * 开启Shiro身份认证注解
+     */
+
     @Bean
-    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator(){
-        DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator=new DefaultAdvisorAutoProxyCreator();
+    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
         defaultAdvisorAutoProxyCreator.setProxyTargetClass(true);
         return defaultAdvisorAutoProxyCreator;
     }
 }
+

@@ -7,11 +7,13 @@ import com.blog.mapper.TagMapper;
 import com.blog.service.PassageService;
 import com.blog.domain.Passage;
 import com.blog.mapper.PassageMapper;
+import com.blog.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.List;
 
 import static com.blog.aop.VisitorAspect.VISITOR_PASSAGE;
@@ -32,6 +34,8 @@ public class PassageServiceImpl extends ServiceImpl<PassageMapper, Passage>
     private TagMapper tagMapper;
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired
+    private ImageUtil imageUtil;
 
     @Transactional
     @Override
@@ -81,10 +85,14 @@ public class PassageServiceImpl extends ServiceImpl<PassageMapper, Passage>
     @Override
     public Result<String> delete(Long passage_id) {
         try {
+            Passage passage = passageMapper.selectById(passage_id);
+            //删除封面
+            File file = new File("./" + imageUtil.getImagePath(passage.getCover()));
+            file.deleteOnExit();
             passageMapper.deleteById(passage_id);
-            return new Result<String>(200,0L,"success");
-        }catch (Exception e){
-            return new Result<String>(200,0L,"failure");
+            return new Result<String>(200, 0L, "success");
+        } catch (Exception e) {
+            return new Result<String>(200, 0L, "failure");
         }
     }
 }

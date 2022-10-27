@@ -115,13 +115,11 @@
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                         </exclude>
-                        <!-- 打包时剔除 properties文件-->
-                        <excludes>
-                            <exclude>*.properties</exclude>
-                            <exclude>*/**/*.properties</exclude>
-                            <exclude>*.yml</exclude>
-                            <exclude>*.xml</exclude>
-                        </excludes>
+                        <!-- 打包时剔除 properties文件
+                        <exclude>**/**/**.xml</exclude>
+                        <exclude>**.yml</exclude>
+                        <exclude>**.properties</exclude>
+                        <exclude>**/**/**.properties</exclude>-->
                     </excludes>
                 </configuration>
             </plugin>

@@ -74,6 +74,7 @@ public class Passage implements Serializable {
     private String visitor;
 
     public Passage(String title,String sub_title,String content,String cover){
+        this.passage_id = 0L;
         this.title = title;
         this.sub_title = sub_title;
         this.content = content;

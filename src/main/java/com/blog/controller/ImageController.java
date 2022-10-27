@@ -16,18 +16,17 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/image")
-@CrossOrigin(originPatterns = "*",allowCredentials="true",allowedHeaders = "",methods = {})
 public class ImageController {
 
     @Autowired
     private ImageUtil imageUtil;
 
-    @RequiresRoles(value = {})
+    @RequiresRoles(value = {"admin"})
     @PostMapping(value = "/upload")
     public String upload_image(@RequestParam("file") MultipartFile mFile) throws UnknownHostException, ExecutionException, InterruptedException {
         imageUtil.transaction = true;
         //获取文件后缀
-        String suffixName = imageUtil.getImagePath(mFile);
+        String suffixName = imageUtil.getImageExtension(mFile);
         //生成新文件名称
         String newFileName = imageUtil.getNewFileName(suffixName);
         //保存文件

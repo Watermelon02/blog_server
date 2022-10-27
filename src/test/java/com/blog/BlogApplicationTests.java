@@ -19,8 +19,6 @@ class BlogApplicationTests {
 
     @Test
     void test() {
-        Result<List<Passage>> result = passageController.select(0);
-        System.out.println(result.getTotal());
     }
 
 
