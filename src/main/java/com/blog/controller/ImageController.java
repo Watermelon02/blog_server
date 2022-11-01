@@ -16,6 +16,7 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/image")
+@CrossOrigin(originPatterns = "*", allowCredentials = "true", allowedHeaders = "*", methods = {})
 public class ImageController {
 
     @Autowired
@@ -41,7 +42,7 @@ public class ImageController {
 
     @GetMapping("/get")
     public String showImage(@RequestParam("path") String path, HttpServletResponse response) {
-        File file = new File("./upload_image/" + path);
+        File file = new File("./upload_image/" + imageUtil.getImagePath(path));
         byte[] bytes = new byte[1024];
         try (OutputStream os = response.getOutputStream();
              FileInputStream fis = new FileInputStream(file)) {

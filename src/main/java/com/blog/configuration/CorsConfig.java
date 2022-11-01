@@ -1,5 +1,7 @@
+/*
 package com.blog.configuration;
 
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -25,4 +27,14 @@ public class CorsConfig {
         source.registerCorsConfiguration("/**", buildConfig());
         return new CorsFilter(source);
     }
+
+    @Bean
+    public FilterRegistrationBean filterRegistrationBean() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", buildConfig());
+        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
+        bean.setOrder(0);//提升优先级
+        return bean;
+    }
 }
+*/

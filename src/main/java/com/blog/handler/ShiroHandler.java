@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ShiroHandler {
     @ExceptionHandler(UnauthenticatedException.class)
     @ResponseBody
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public Result<String> handleUnauthenticatedException(){
-        return new  Result<String>(404,0L,"没有登录");
+        return new  Result<String>(401,0L,"没有登录");
     }
 }

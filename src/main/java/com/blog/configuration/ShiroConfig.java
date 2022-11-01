@@ -1,3 +1,4 @@
+
 package com.blog.configuration;
 
 import com.blog.shiro.ShiroRealm;
@@ -34,8 +35,6 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/img/**", "anon");
         // druid数据源监控页面不拦截
         filterChainDefinitionMap.put("/druid/**", "anon");
-        // 配置退出过滤器，其中具体的退出代码Shiro已经替我们实现了
-        filterChainDefinitionMap.put("/logout", "logout");
         // 除上以外所有url都可以任意访问
         filterChainDefinitionMap.put("/**", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
@@ -67,10 +66,10 @@ public class ShiroConfig {
         return cookieManager;
     }
 
+
     /**
      * 开启Shiro身份认证注解
      */
-
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
@@ -81,7 +80,6 @@ public class ShiroConfig {
     /**
      * 开启Shiro身份认证注解
      */
-
     @Bean
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
         DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
@@ -89,4 +87,5 @@ public class ShiroConfig {
         return defaultAdvisorAutoProxyCreator;
     }
 }
+
 

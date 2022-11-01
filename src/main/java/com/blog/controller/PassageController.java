@@ -24,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/passage")
 @CacheConfig(cacheNames = "passage")
+@CrossOrigin(originPatterns = "*", allowCredentials = "true", allowedHeaders = "*", methods = {})
 public class PassageController {
     @Value("${server.port}")
     private int port;
@@ -84,6 +85,7 @@ public class PassageController {
         } catch (Exception e) {
             imageUtil.deleteLastImage();
             result = new Result<Passage>(404, 0L, null);
+            e.printStackTrace();
         } finally {
             imageUtil.transaction = false;
         }

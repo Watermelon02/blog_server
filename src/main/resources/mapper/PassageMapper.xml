@@ -29,26 +29,30 @@
 
     </insert>
     <select id="selectByPage" resultMap="BaseResultMap">
-        SELECT passage_id,title,sub_title,create_time,update_time,cover
+        SELECT passage_id, title, sub_title, create_time, update_time, cover
         FROM passage
     </select>
     <select id="selectByTagAndPage" resultMap="BaseResultMap">
-        SELECT passage.passage_id,passage.title,passage.sub_title,passage.create_time,passage.update_time,passage.cover
+        SELECT passage.passage_id,
+               passage.title,
+               passage.sub_title,
+               passage.create_time,
+               passage.update_time,
+               passage.cover
         FROM passage
                  INNER JOIN passage_tag
                             on passage_tag.passage_id = passage.passage_id
         WHERE passage_tag.tag_id = #{tag_id,jdbcType=TINYINT}
     </select>
     <select id="selectLike" resultMap="BaseResultMap">
-        select passage.passage_id,passage.title,passage.sub_title,passage.content
+        select passage.passage_id, passage.title, passage.sub_title, passage.content
         from passage
-        where
-        content like #{keyword,jdbcType=VARCHAR}
-        OR title like #{keyword,jdbcType=VARCHAR}
-        OR sub_title like #{keyword,jdbcType=VARCHAR}
+        where content like #{keyword,jdbcType=VARCHAR}
+           OR title like #{keyword,jdbcType=VARCHAR}
+           OR sub_title like #{keyword,jdbcType=VARCHAR}
     </select>
     <select id="selectById" resultMap="BaseResultMap">
-        SELECT passage_id,title,sub_title,content,create_time,update_time,cover
+        SELECT passage_id, title, sub_title, content, create_time, update_time, cover
         FROM passage
         WHERE passage_id = #{passage_id,jdbcType=BIGINT}
     </select>

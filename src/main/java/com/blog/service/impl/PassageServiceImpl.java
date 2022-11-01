@@ -92,7 +92,7 @@ public class PassageServiceImpl extends ServiceImpl<PassageMapper, Passage>
             passageMapper.deleteById(passage_id);
             return new Result<String>(200, 0L, "success");
         } catch (Exception e) {
-            return new Result<String>(200, 0L, "failure");
+            return new Result<String>(200, 0L, e.getMessage());
         }
     }
 }

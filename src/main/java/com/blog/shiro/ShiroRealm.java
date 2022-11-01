@@ -36,4 +36,8 @@ public class ShiroRealm extends AuthorizingRealm {
         }
         return new SimpleAuthenticationInfo(user, password, getName());
     }
+
+    public void clearAllCachedAuthorizationInfo() {
+        getAuthorizationCache().clear();
+    }
 }
