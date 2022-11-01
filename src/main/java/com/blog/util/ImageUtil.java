@@ -19,7 +19,7 @@ import java.util.concurrent.Future;
 @Service
 public class ImageUtil {
     //存放图片的绝对路径
-    private final static String SAVE_IMAGE_PATH = "./upload_image/";
+    public final static String SAVE_IMAGE_PATH = "/upload_image/";
     private File lastFile;
     /**
      * 上传文章封面和上传文章内容的事务标志位
@@ -74,9 +74,12 @@ public class ImageUtil {
         return SAVE_IMAGE_PATH + name;
     }
 
+    @Value("${host}")
+    private String host = "";
+
     public String getImageUrl(String newFileName) throws UnknownHostException {
         //保存数据库的图片路径为  url
-        imageUrl = "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port + "/image/get?path=" + newFileName;
+        imageUrl = "http://" + host + ":" + port + "/image/get?path=" + newFileName;
         return imageUrl;
     }
 
@@ -95,6 +98,8 @@ public class ImageUtil {
      * 根据Passage对象的cover属性获取其路径
      */
     public String getImagePath(String cover) {
+        System.out.println(cover);
+        System.out.println(cover.indexOf("="));
         return cover.substring(cover.indexOf("="));
     }
 }

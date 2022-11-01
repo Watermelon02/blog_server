@@ -14,6 +14,8 @@ import java.io.OutputStream;
 import java.net.UnknownHostException;
 import java.util.concurrent.ExecutionException;
 
+import static com.blog.util.ImageUtil.SAVE_IMAGE_PATH;
+
 @RestController
 @RequestMapping("/image")
 @CrossOrigin(originPatterns = "*", allowCredentials = "true", allowedHeaders = "*", methods = {})
@@ -42,7 +44,8 @@ public class ImageController {
 
     @GetMapping("/get")
     public String showImage(@RequestParam("path") String path, HttpServletResponse response) {
-        File file = new File("./upload_image/" + imageUtil.getImagePath(path));
+        File file = new File(SAVE_IMAGE_PATH + path);
+        System.out.println(SAVE_IMAGE_PATH + path);
         byte[] bytes = new byte[1024];
         try (OutputStream os = response.getOutputStream();
              FileInputStream fis = new FileInputStream(file)) {
