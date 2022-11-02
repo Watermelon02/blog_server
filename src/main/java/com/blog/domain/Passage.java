@@ -27,7 +27,8 @@ public class Passage implements Serializable {
      * 
      */
     @TableId(type = IdType.AUTO)
-    private Long passage_id;
+    @TableField("passage_id")
+    private Long passageId;
 
     /**
      * 标题
@@ -39,7 +40,8 @@ public class Passage implements Serializable {
      * 子标题
      */
     @NotNull
-    private String sub_title;
+    @TableField("sub_title")
+    private String subTitle;
 
     /**
      * 文章内容
@@ -75,10 +77,10 @@ public class Passage implements Serializable {
      */
     private String visitor;
 
-    public Passage(String title,String sub_title,String content,String cover){
-        this.passage_id = 0L;
+    public Passage(String title, String subTitle, String content, String cover){
+        this.passageId = 0L;
         this.title = title;
-        this.sub_title = sub_title;
+        this.subTitle = subTitle;
         this.content = content;
         this.cover =cover;
     }

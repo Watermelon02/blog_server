@@ -15,11 +15,11 @@ import java.util.List;
 public interface PassageService extends IService<Passage> {
     Result<List<Passage>> select(Integer page);
 
-    Result<List<Passage>> selectByTagsAndPage(Integer tag, Integer curPage);
+    Result<List<Passage>> selectByTagsAndPage(Integer tag, Integer currentPage);
 
     Result<Passage> selectOne(Long passage_id);
 
-    Result<List<Passage>> selectLike(String keyword, Integer curPage);
+    Result<List<Passage>> selectLike(String keyword, Integer currentPage);
 
     int update(Passage update);
 

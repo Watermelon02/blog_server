@@ -23,9 +23,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
     CommentMapper commentMapper;
 
     @Override
-    public List<Comment> selectByPassageId(Long passage_id, int curPage) {
-        Page<Comment> page = new Page<>(curPage, COMMENT_PAGE_SIZE);
-        return commentMapper.selectByPassageId(passage_id, page).getRecords();
+    public List<Comment> selectByPassageId(Long passageId, int currentPage) {
+        Page<Comment> page = new Page<>(currentPage, COMMENT_PAGE_SIZE);
+        return commentMapper.selectByPassageId(passageId, page).getRecords();
     }
 }
 

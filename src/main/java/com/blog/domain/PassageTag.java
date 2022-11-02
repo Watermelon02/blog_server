@@ -25,7 +25,7 @@ public class PassageTag implements Serializable {
      * 
      */
     @TableField(value = "tag_id")
-    private Integer tag_id;
+    private Integer tagId;
 
     /**
      * 
@@ -33,8 +33,8 @@ public class PassageTag implements Serializable {
     @TableField(value = "passage_id")
     private Long passageId;
 
-    public PassageTag(Integer tag_id, Long passageId){
-        this.tag_id = tag_id;
+    public PassageTag(Integer tagId, Long passageId){
+        this.tagId = tagId;
         this.passageId = passageId;
     }
 

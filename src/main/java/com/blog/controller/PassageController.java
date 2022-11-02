@@ -2,12 +2,10 @@ package com.blog.controller;
 
 import com.blog.domain.Passage;
 import com.blog.domain.PassageTag;
-import com.blog.domain.User;
 import com.blog.domain.response.Result;
 import com.blog.service.PassageService;
 import com.blog.service.PassageTagService;
 import com.blog.util.ImageUtil;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,30 +35,30 @@ public class PassageController {
 
     @GetMapping("/select")
     @Cacheable(key = "'passages_page:'+#p0")
-    public Result<List<Passage>> select(@RequestParam("curPage") Integer curPage) {
-        return passageService.select(curPage);
+    public Result<List<Passage>> select(@RequestParam("currentPage") Integer currentPage) {
+        return passageService.select(currentPage);
     }
 
     @GetMapping("/selectByTag")
     @Cacheable(key = "'passages_tag:'+#p0+':'+#p1")
-    public Result<List<Passage>> selectByTag(@RequestParam("tag_id") Integer tag_id, @RequestParam("curPage") Integer curPage) {
-        return passageService.selectByTagsAndPage(tag_id, curPage);
+    public Result<List<Passage>> selectByTag(@RequestParam("tagId") Integer tagId, @RequestParam("currentPage") Integer currentPage) {
+        return passageService.selectByTagsAndPage(tagId, currentPage);
     }
 
     @GetMapping("/selectLike")
-    public Result<List<Passage>> selectLike(@RequestParam("keyword") String keyword, @RequestParam("curPage") Integer curPage) {
-        return passageService.selectLike("%" + keyword + "%", curPage);
+    public Result<List<Passage>> selectLike(@RequestParam("keyword") String keyword, @RequestParam("currentPage") Integer currentPage) {
+        return passageService.selectLike("%" + keyword + "%", currentPage);
     }
 
     @GetMapping("/selectById")
     @Cacheable(key = "'passages_id:'+#p0")
-    public Result<Passage> selectById(@RequestParam("passage_id") Long passage_id) {
-        return passageService.selectOne(passage_id);
+    public Result<Passage> selectById(@RequestParam("passageId") Long passageId) {
+        return passageService.selectOne(passageId);
     }
 
     @RequiresRoles(value = {"admin"}, logical = Logical.AND)
     @PostMapping("/update")
-    @CachePut(key = "'passages_id:'+#p0.passage_id")
+    @CachePut(key = "'passages_id:'+#p0.passageId")
     @CacheEvict(key = "'passage_id:'+#p0",allEntries = true)
     public int update(@RequestBody Passage passage) {
         return passageService.update(passage);
@@ -69,16 +67,16 @@ public class PassageController {
     @Transactional
     @RequiresRoles(value = {"admin"})
     @PostMapping("/post")
-    @CachePut(key = "'passages_id:'+#result.data.passage_id")
+    @CachePut(key = "'passages_id:'+#result.data.passageId")
     @CacheEvict(key = "'passage_id:'+#p0",allEntries = true)
-    public Result<Passage> post(@RequestParam("title") String title, @RequestParam("sub_title") String sub_title, @RequestParam("content") String content,@RequestParam("cover")String cover,@RequestParam("tags") Integer[] tags) {
+    public Result<Passage> post(@RequestParam("title") String title, @RequestParam("subTitle") String subTitle, @RequestParam("content") String content, @RequestParam("cover")String cover, @RequestParam("tags") Integer[] tags) {
         Result<Passage> result = new Result<Passage>(403, 0L, null);
         try {
             if (imageUtil.transaction) {
-                Passage passage = new Passage(title, sub_title, content, cover);
+                Passage passage = new Passage(title, subTitle, content, cover);
                 passageService.save(passage);
                 for (int tag : tags) {
-                    passageTagService.save(new PassageTag(tag, passage.getPassage_id()));
+                    passageTagService.save(new PassageTag(tag, passage.getPassageId()));
                 }
                 result = new Result<Passage>(200, 0L, passage);
             }
@@ -95,7 +93,7 @@ public class PassageController {
     @GetMapping("/delete")
     @CacheEvict(key = "'passage_id:'+#p0",allEntries = true)
     @RequiresRoles(value = {"admin"})
-    public Result<String> delete(@RequestParam("passage_id")Long passage_id){
-        return passageService.delete(passage_id);
+    public Result<String> delete(@RequestParam("passageId")Long passageId){
+        return passageService.delete(passageId);
     }
 }

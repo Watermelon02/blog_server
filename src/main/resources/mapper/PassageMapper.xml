@@ -5,9 +5,9 @@
 <mapper namespace="com.blog.mapper.PassageMapper">
 
     <resultMap id="BaseResultMap" type="com.blog.domain.Passage">
-        <id property="passage_id" column="passage_id" jdbcType="BIGINT"/>
+        <id property="passageId" column="passage_id" jdbcType="BIGINT"/>
         <result property="title" column="title" jdbcType="VARCHAR"/>
-        <result property="sub_title" column="sub_title" jdbcType="VARCHAR"/>
+        <result property="subTitle" column="sub_title" jdbcType="VARCHAR"/>
         <result property="content" column="content" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>

@@ -33,8 +33,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public User selectByUserId(Long user_id) {
-        return userMapper.selectByUserId(user_id);
+    public User selectByUserId(Long userId) {
+        return userMapper.selectByUserId(userId);
     }
 }
 

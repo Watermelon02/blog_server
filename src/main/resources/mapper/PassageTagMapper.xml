@@ -6,7 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.blog.domain.PassageTag">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="tag_id" column="tag_id" jdbcType="TINYINT"/>
+            <result property="tagId" column="tag_id" jdbcType="TINYINT"/>
             <result property="passageId" column="passage_id" jdbcType="BIGINT"/>
     </resultMap>
 

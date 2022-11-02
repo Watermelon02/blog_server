@@ -9,7 +9,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -26,16 +25,16 @@ public class CommentController {
 
     @PostMapping("/add")
     @RequiresRoles(value = {"admin", "user"}, logical = Logical.OR)
-    public Result<Comment> addComment(@RequestParam("passage_id") Long passage_id, @RequestParam("content") String content) {
+    public Result<Comment> addComment(@RequestParam("passageId") Long passageId, @RequestParam("content") String content) {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
-        Comment comment = new Comment(passage_id, user.getUserId(), content);
+        Comment comment = new Comment(passageId, user.getUserId(), content);
         commentService.save(comment);
         return new Result<Comment>(200, 1L, comment);
     }
 
     @PostMapping("/select")
-    public Result<List<Comment.CommentResponse>> selectByPassageId(@RequestParam("passage_id") Long passage_id, @RequestParam("curPage") Integer curPage) {
-        List<Comment> commentList = commentService.selectByPassageId(passage_id, curPage);
+    public Result<List<Comment.CommentResponse>> selectByPassageId(@RequestParam("passageId") Long passageId, @RequestParam("currentPage") Integer currentPage) {
+        List<Comment> commentList = commentService.selectByPassageId(passageId, currentPage);
         ArrayList<Comment.CommentResponse> commentResponses = new ArrayList<>();
         for (Comment comment : commentList) {
             User user = userService.selectByUserId(comment.getUserId());

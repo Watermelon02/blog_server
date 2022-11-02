@@ -19,7 +19,7 @@ public class Tag implements Serializable {
      * 
      */
     @TableId(value = "tag_id", type = IdType.AUTO)
-    private Integer tag_id;
+    private Integer tagId;
 
     /**
      * 

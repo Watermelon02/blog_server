@@ -11,5 +11,5 @@ import java.util.List;
 * @createDate 2022-10-11 08:07:16
 */
 public interface CommentService extends IService<Comment> {
-    public List<Comment> selectByPassageId(Long passage_id, int curPage);
+    public List<Comment> selectByPassageId(Long passageId, int currentPage);
 }

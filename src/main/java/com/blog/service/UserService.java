@@ -15,5 +15,5 @@ public interface UserService extends IService<User> {
 
     User login(String account, String password);
 
-    User selectByUserId(Long user_id);
+    User selectByUserId(Long userId);
 }
