@@ -8,6 +8,10 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -45,6 +49,8 @@ public class Comment implements Serializable {
      *
      */
     @TableField(value = "create_time")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)		// 为了redis存储反序列化
+    @JsonSerialize(using = LocalDateTimeSerializer.class)		// 为了redis存储序列化
     private LocalDateTime createTime;
 
     public Comment(Long passageId, Long userId, String content) {

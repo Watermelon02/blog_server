@@ -26,8 +26,7 @@ public class Passage implements Serializable {
     /**
      * 
      */
-    @TableId(type = IdType.AUTO)
-    @TableField("passage_id")
+    @TableId(type = IdType.AUTO,value = "passage_id")
     private Long passageId;
 
     /**

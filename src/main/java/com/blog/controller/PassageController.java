@@ -59,11 +59,10 @@ public class PassageController {
     @RequiresRoles(value = {"admin"}, logical = Logical.AND)
     @PostMapping("/update")
     @CachePut(key = "'passages_id:'+#p0.passageId")
-    @CacheEvict(key = "'passage_id:'+#p0",allEntries = true)
+    @CacheEvict(key = "'passage_id:'+#p0", allEntries = true)
     public int update(@RequestBody Passage passage) {
         return passageService.update(passage);
     }
-
     @Transactional
     @RequiresRoles(value = {"admin"})
     @PostMapping("/post")

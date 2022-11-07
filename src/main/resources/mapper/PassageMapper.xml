@@ -51,7 +51,7 @@
            OR title like #{keyword,jdbcType=VARCHAR}
            OR sub_title like #{keyword,jdbcType=VARCHAR}
     </select>
-    <select id="selectById" resultMap="BaseResultMap">
+    <select id="selectOne" resultMap="BaseResultMap">
         SELECT passage_id, title, sub_title, content, create_time, update_time, cover
         FROM passage
         WHERE passage_id = #{passage_id,jdbcType=BIGINT}

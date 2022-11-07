@@ -26,7 +26,7 @@ public interface PassageMapper extends BaseMapper<Passage> {
 
     IPage<Passage> selectByTagAndPage(@Param("tag_id") Serializable tag_id, @Param("page") IPage<Passage> page);
 
-    Passage selectById(@Param("passage_id") Serializable tag_id);
+    Passage selectOne(@Param("passage_id") Serializable tag_id);
 
     IPage<Passage> selectLike(@Param("keyword") String keyword,IPage<Passage> page);
 }

@@ -64,7 +64,7 @@ public class PassageServiceImpl extends ServiceImpl<PassageMapper, Passage>
 
     @Override
     public Result<Passage> selectOne(Long passage_id) {
-        Passage passage = passageMapper.selectById(passage_id);
+        Passage passage = passageMapper.selectOne(passage_id);
         passage.setTags(tagMapper.selectTagByPassageId(passage.getPassageId()));
         passage.setVisitor(redisTemplate.opsForValue().get(VISITOR_PASSAGE + passage_id));
         return new Result<Passage>(200, 1L, passage);
@@ -85,7 +85,7 @@ public class PassageServiceImpl extends ServiceImpl<PassageMapper, Passage>
     @Override
     public Result<String> delete(Long passage_id) {
         try {
-            Passage passage = passageMapper.selectById(passage_id);
+            Passage passage = passageMapper.selectOne(passage_id);
             //删除封面
             File file = new File("./" + imageUtil.getImagePath(passage.getCover()));
             file.deleteOnExit();

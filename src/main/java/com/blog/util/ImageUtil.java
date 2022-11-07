@@ -79,7 +79,7 @@ public class ImageUtil {
 
     public String getImageUrl(String newFileName) throws UnknownHostException {
         //保存数据库的图片路径为  url
-        imageUrl = "http://" + host + ":" + port + "/image/get?path=" + newFileName;
+        imageUrl = "https://" + host + ":" + port + "/image/get?path=" + newFileName;
         return imageUrl;
     }
 
